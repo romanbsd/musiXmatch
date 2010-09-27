@@ -68,7 +68,6 @@ static NSString *kUserAgent = nil;
 
 - (NSArray*)trackSearch:(NSString *)url {
 	NSDictionary *body = [self performQuery:url];
-	[url release];
 	NSArray *results = [body objectForKey:@"track_list"];
 	if (!results) {
 		return [NSArray array];
@@ -84,15 +83,15 @@ static NSString *kUserAgent = nil;
 
 
 - (NSArray*)trackSearch:(NSString *)query numResults:(NSUInteger)numResults {
-	NSString *url = [[NSString alloc] initWithFormat:@"%@&q=%@&page_size=%u&f_has_lyrics=1",
+	NSString *url = [NSString stringWithFormat:@"%@&q=%@&page_size=%u&f_has_lyrics=1",
 					 [self baseUrl:TRACK_SEARCH], [query URLEncoded], numResults];
 	return [self trackSearch:url];
 }
 
 
 - (Track*)trackSearch:(NSString*)artist track:(NSString*)track {
-	NSString *url = [[NSString alloc] initWithFormat:@"%@&q_artist=%@&q_track=%@&page_size=1&f_has_lyrics=1",
-						[self baseUrl:TRACK_SEARCH], [artist URLEncoded], [track URLEncoded]];
+	NSString *url = [NSString stringWithFormat:@"%@&q_artist=%@&q_track=%@&page_size=1&f_has_lyrics=1",
+					 [self baseUrl:TRACK_SEARCH], [artist URLEncoded], [track URLEncoded]];
 	NSArray *tracks = [self trackSearch:url];
 	if (!tracks || [tracks count] == 0) {
 		return nil;
