@@ -1,0 +1,38 @@
+MusiXmatch for Objective-C
+==========================
+
+This is an Objective-C library which provides a basic access to the musiXmatch public API.
+It can be used both in MacOS X desktop application and in iPhoneOS applications.
+More information about the musiXmatch service can be found on their site: http://musixmatch.com/
+
+
+Installation:
+-------------
+1. Include all files from the Classes directory in your project
+(if your are building as a static library, don't forget to add -load_all and -ObjC to linker flags)
+2. Edit the MusiXmatchService.h and set your API key
+
+
+Example usage:
+--------------
+    MusiXmatchService *service = [[MusiXmatchService alloc] init];
+    Track *track = [service getTrack:123];
+    NSString *lyrics = [track lyrics];
+
+    NSArray *tracks = [service trackSearch:@"dreamer" numResults:10];
+    for (Track *track in tracks) {
+        NSLog(@"TrackID: %u, Artist: %@, Title: %@", track.mxmId, track.artist.name, track.name);
+    }
+
+TODO:
+-----
+1. Support for all API methods, e.g. track.chart.get and lyrics.feedback.post
+2. More robust handling of return codes
+3. Asynchronous fetching support
+4. More robust error handling
+5. Convert MusiXmatchService to singleton
+
+License:
+--------
+This library is distributed under the MIT license. Copyright 2010 Roman Shterenzon
+The included JSON parser: Copyright 2009 Satoshi Numata, Ph.D.
