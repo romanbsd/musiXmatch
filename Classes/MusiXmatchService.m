@@ -12,6 +12,7 @@
 #import "NSString+Extensions.h"
 
 static NSString *kUserAgent = nil;
+static MusiXmatchService *sharedInstance = nil;
 
 @interface MusiXmatchService (Private)
 - (NSString*)baseUrl:(NSString*)method;
@@ -121,5 +122,49 @@ static NSString *kUserAgent = nil;
 	return [track autorelease];
 }
 
+
+#pragma mark -
+#pragma mark Singleton methods
+
++ (MusiXmatchService*)sharedInstance
+{
+    @synchronized(self)
+    {
+        if (sharedInstance == nil)
+			sharedInstance = [[MusiXmatchService alloc] init];
+    }
+    return sharedInstance;
+}
+
++ (id)allocWithZone:(NSZone *)zone {
+    @synchronized(self) {
+        if (sharedInstance == nil) {
+            sharedInstance = [super allocWithZone:zone];
+            return sharedInstance;  // assignment and return on first allocation
+        }
+    }
+    return nil; // on subsequent allocation attempts return nil
+}
+
+- (id)copyWithZone:(NSZone *)zone
+{
+    return self;
+}
+
+- (id)retain {
+    return self;
+}
+
+- (NSUInteger)retainCount {
+    return UINT_MAX;  // denotes an object that cannot be released
+}
+
+- (void)release {
+    //do nothing
+}
+
+- (id)autorelease {
+    return self;
+}
 
 @end

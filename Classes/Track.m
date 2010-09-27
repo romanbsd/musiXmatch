@@ -23,7 +23,7 @@
 @dynamic lyrics;
 
 + (id)trackWithId:(NSUInteger)trackId {
-	MusiXmatchService *service = [[[MusiXmatchService alloc] init] autorelease];
+	MusiXmatchService *service = [MusiXmatchService sharedInstance];
 	return [service getTrack:trackId];
 }
 	
@@ -49,9 +49,8 @@
 
 - (NSString*)lyrics {
 	if (!lyrics) {
-		MusiXmatchService *service = [[MusiXmatchService alloc] init];
+		MusiXmatchService *service = [MusiXmatchService sharedInstance];
 		lyrics = [[service getLyrics:lyricsId] retain];
-		[service release];
 	}
 	return lyrics;
 }

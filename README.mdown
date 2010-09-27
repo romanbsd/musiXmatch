@@ -15,10 +15,13 @@ Installation:
 
 Example usage:
 --------------
-    MusiXmatchService *service = [[MusiXmatchService alloc] init];
-    Track *track = [service getTrack:123];
+
+    // Get a track
+    Track *track = [Track trackWithId:123];
     NSString *lyrics = [track lyrics];
 
+    // Or use the service directly
+    MusiXmatchService *service = [MusiXmatchService sharedInstance];
     NSArray *tracks = [service trackSearch:@"dreamer" numResults:10];
     for (Track *track in tracks) {
         NSLog(@"TrackID: %u, Artist: %@, Title: %@", track.mxmId, track.artist.name, track.name);
@@ -27,10 +30,8 @@ Example usage:
 TODO:
 -----
 1. Support for all API methods, e.g. track.chart.get and lyrics.feedback.post
-2. More robust handling of return codes
+2. More robust handling of return codes and errors
 3. Asynchronous fetching support
-4. More robust error handling
-5. Convert MusiXmatchService to singleton
 
 License:
 --------

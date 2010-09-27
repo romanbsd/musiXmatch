@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 
 // Set this!
-#define APIKEY @"MYIPKEY"
+#define APIKEY @"YOURAPIKEY"
 #define APIBASE @"http://api.musixmatch.com/ws/1.0/"
 #define APIFORMAT @"json"
 
@@ -25,6 +25,9 @@
 @interface MusiXmatchService : NSObject {
 
 }
+
+// Get a singleton instance
++ (MusiXmatchService*)sharedInstance;
 
 // Query all fields, return limited number of results
 - (NSArray*)trackSearch:(NSString *)query numResults:(NSUInteger)numResults;

@@ -13,7 +13,7 @@
 int main(void) {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	
-	MusiXmatchService *service = [[MusiXmatchService alloc] init];
+	MusiXmatchService *service = [MusiXmatchService sharedInstance];
 	Track *track = [service trackSearch:@"Iron Maiden" track:@"the trooper"];
 	NSLog(@"track_id: %u, lyrics: %@", track.mxmId, [track lyrics]);
 
