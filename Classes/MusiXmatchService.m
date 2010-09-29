@@ -31,7 +31,7 @@ static MusiXmatchService *sharedInstance = nil;
 - (NSDictionary*)performQuery:(NSString*)urlStr {
 	NSURL *url = [[NSURL alloc] initWithString:urlStr];
 	NSError *error = nil;
-	NSURLResponse *response = nil;
+	NSHTTPURLResponse *response = nil;
 	NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
 	[url release];
 	if (!kUserAgent) {
@@ -55,6 +55,12 @@ static MusiXmatchService *sharedInstance = nil;
 		NSLog(@"Error fetching %@: %@", url, [error localizedDescription]);
 		return nil;
 	}
+	if ([response statusCode] != 200) {
+		NSString *body = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+		NSLog(@"Cannot fetch %@: %@", url, body);
+		[body release];
+		return nil;
+	}
 	SZJsonParser *parser = [[SZJsonParser alloc] initWithData:data];
 	id dict = [parser parse];
 	[parser release];
@@ -62,7 +68,11 @@ static MusiXmatchService *sharedInstance = nil;
 		NSLog(@"Invalid response: %@", dict);
 		return nil;
 	}
-	NSDictionary *body = [[dict objectForKey:@"message"] objectForKey:@"body"];
+	id body = [[dict objectForKey:@"message"] objectForKey:@"body"];
+	if (![body isKindOfClass:[NSDictionary class]]) {
+		NSLog(@"Invalid body, statusCode: %@", [[[dict objectForKey:@"message"] objectForKey:@"header"] objectForKey:@"status_code"]);
+		return nil;
+	}
 	return body;
 }
 
