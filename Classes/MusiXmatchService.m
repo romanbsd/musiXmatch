@@ -119,7 +119,11 @@ static MusiXmatchService *sharedInstance = nil;
 	if (!body) {
 		return nil;
 	}
-	return [[[body objectForKey:@"lyrics_list"] objectForKey:@"lyrics"] objectForKey:@"lyrics_body"];
+	NSArray *lyricsList = [body objectForKey:@"lyrics_list"];
+	if ([lyricsList count] == 0) {
+		return nil;
+	}
+	return [[[lyricsList objectAtIndex:0] objectForKey:@"lyrics"] objectForKey:@"lyrics_body"];
 }
 
 
