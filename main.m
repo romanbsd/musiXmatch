@@ -23,7 +23,6 @@ int main(void) {
 	}
 	track = [service trackSearch:@"dummyartist" track:@"dummytrack"];
 	NSLog(@"track: %@", track);
-	[service release];
 	
 	[pool release];
 	return 0;
